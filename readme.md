@@ -1,3 +1,7 @@
+# Frequently Asked Questions (FAQ)
+
+---
+
 ## ▶ Github
 ### Authentication
 
