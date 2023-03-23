@@ -1,0 +1,17 @@
+// A corregir
+var 1nombre string
+var apellido string
+var int edad
+1apellido := 6
+var licencia_de_conducir = true
+var estatura de la persona int
+cantidadDeHijos := 2
+
+// Correcto
+var nombre string               // Los nombres de variables deben empezar por una letra.
+var apellido string
+var edad int                    // El tipo de dato debe ir después del nombre de la variable.
+apellido := 6                   // Los nombres de variables deben empezar por una letra.
+var licenciaDeConducir = true   // Las variables deben ser en camelCase.
+var estaturaDeLaPersona int     // Las variables deben ser en camelCase y sin espacios.
+cantidadDeHijos := 2
