@@ -1,0 +1,74 @@
+definitions:
+  model.Album:
+    properties:
+      artist:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+      year:
+        type: integer
+    type: object
+  web.Response:
+    properties:
+      code:
+        type: integer
+      status:
+        type: string
+    type: object
+host: localhost/8080
+info:
+  contact: {}
+  description: Ejemplo de como implementar swagger en Golang
+  license:
+    name: Apache 2.0
+    url: http://licencia.com
+  termsOfService: https://terminosyservicios.com
+  title: EJEMPLO SWAGGER
+  version: "1.0"
+paths:
+  /albums:
+    get:
+      description: Gets all albums without filter
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: List Albums
+      tags:
+      - Albums
+    post:
+      description: Create an album
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: album
+        in: body
+        name: album
+        required: true
+        schema:
+          $ref: '#/definitions/model.Album'
+      produces:
+      - application/json
+      responses:
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.Response'
+      summary: Create Album
+      tags:
+      - Albums
+swagger: "2.0"
