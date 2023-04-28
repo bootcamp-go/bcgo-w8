@@ -20,12 +20,18 @@ func init() {
 	}
 
 	txdb.Register("txdb", "mysql", os.Getenv("DB"))
+
+	// cfg := mysql.Config{
+	// 	ParseTime: true,
+	// }
+	// txdb.Register("txdb", "mysql", "root:password@tcp(localhost:3306)/product_db?parseTime=true")
 }
 
 // Test
 func TestRepositoryMySQL_GetAll(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		// arrange
+		// db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/product_db?parseTime=true")
 		db, err := sql.Open("txdb", "identifier")
 		assert.NoError(t, err)
 		defer db.Close()
@@ -48,7 +54,7 @@ func TestRepositoryMySQL_GetAll(t *testing.T) {
 	})
 }
 
-func TestStorageMySql_GetFull(t *testing.T) {
+func TestRepositoryMySql_GetFull(t *testing.T) {
 	t.Run("succeed", func(t *testing.T) {
 		// arrange
 		db, err := sql.Open("txdb", "product_db")
@@ -85,5 +91,54 @@ func TestStorageMySql_GetFull(t *testing.T) {
 		// assert
 		assert.ErrorIs(t, err, ErrRepositoryNotFound)
 		assert.Empty(t, pr)
+	})
+}
+
+func TestRepositoryMySql_Create(t *testing.T) {
+	t.Run("succeed", func(t *testing.T) {
+		// arrange
+		db, err := sql.Open("txdb", "product_db")
+		assert.NoError(t, err)
+		defer db.Close()
+
+		rp := NewRepositoryMySQL(db)
+
+		pr := &Product{
+			Name: "Coca Cola",
+			Type: "Drinks",
+			Count: 10,
+			Price: 400.00,
+			WarehouseId: 1,
+		}
+
+		// act
+		err = rp.Create(pr)
+
+		// assert
+		assert.NoError(t, err)
+		// assert.Equal(t, 3, pr.ID)
+	})
+
+	t.Run("failed, unexisting foreign key", func(t *testing.T) {
+		// arrange
+		db, err := sql.Open("txdb", "product_db")
+		assert.NoError(t, err)
+		defer db.Close()
+
+		rp := NewRepositoryMySQL(db)
+
+		pr := &Product{
+			Name: "Coca Cola",
+			Type: "Drinks",
+			Count: 10,
+			Price: 400.00,
+			WarehouseId: 100,
+		}
+
+		// act
+		err = rp.Create(pr)
+
+		// assert
+		assert.ErrorIs(t, err, ErrRepositoryForeignKey)
 	})
 }

@@ -25,8 +25,12 @@ type Repository interface {
 	GetAll() (pr []*Product, err error)
 	// GetFullData returns all products with warehouse name and address
 	GetFullData(id int) (pf *ProductFull, err error)
+
+	// Create a new product
+	Create(p *Product) (err error)
 }
 var (
 	ErrRepositoryInternal = errors.New("internal repository error")
 	ErrRepositoryNotFound = errors.New("product not found")
+	ErrRepositoryForeignKey = errors.New("foreign key constraint fails")
 )
